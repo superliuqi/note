@@ -1,0 +1,84 @@
+.layui-form-item {
+    margin-bottom: 10px;
+}
+.layui-form-label {
+    padding: 9px 10px;
+    width: 90px;
+}
+
+tr:hover{  background-color: #ffffff;}
+
+/*操作按钮*/
+.searchButton {
+    padding: 0 10px;
+}
+.searchButton .search_input {
+    float: right;
+}
+.searchButton .search_input .layui-input, .layui-select, .layui-textarea{
+    height: 30px;
+}
+.searchButton .layui-inline{
+    padding: 2px 0px;
+}
+.batchButton {
+    padding: 0px 10px;
+    padding-top: 2px;
+}
+
+/*商品页图片*/
+.goods_image {
+    float: left;
+    width: 110px;
+}
+.goods_image li {
+    text-align: center;
+}
+.goods_image li img{
+    border: 3px solid #9F9F9F;
+    width: 100px;
+}
+.goods_image li i{
+    color: #009688;
+    line-height: 20px;
+    cursor: pointer;
+}
+/*商品页规格*/
+@media screen and (min-width: 480px) {
+    .goods_spec .input_list {
+        margin-left: 110px;
+    }
+}
+.goods_spec .layui-input {
+    display: inline;
+    height: 25px;
+    width: 60px;
+    padding: 0px 2px;
+    vertical-align: -4px;
+    font-size: 13px;
+}
+.goods_spec .layui-form-checkbox span {
+    padding: 0px 2px;
+}
+.goods_spec img {
+    margin-top: 3px;
+    height: 25px;
+}
+.goods_spec .img_none {
+    display: none;
+}
+#goods_spec_table input {
+    height: 25px;
+    line-height: 1.3;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #fff;
+    border-radius: 2px;
+    border-color: #e6e6e6;
+    width: 100%;
+}
+
+/*角色管理多选框*/
+.role_checkbox {
+    margin-bottom: 5px; float: left;
+}
