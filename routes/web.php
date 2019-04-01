@@ -706,8 +706,21 @@ Route::group(['domain' => config('app.admin_domain'), 'namespace' => 'Admin', 'm
         });
 
     });
-
-
+    
+    /**
+     ***************笔记管理*******************
+     */
+    Route::group(['namespace' => 'Note'], function () {
+        //优惠券
+        Route::prefix('note')->group(function () {
+            Route::get('', 'NoteController@lists');
+            Route::get('lists_ajax', 'NoteController@listsAjax');
+            Route::get('add', 'NoteController@edit');
+            Route::any('edit', 'NoteController@edit');
+            Route::post('delete', 'NoteController@delete');
+            Route::post('status', 'NoteController@status');
+        });
+    });
 
 
 });

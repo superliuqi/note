@@ -1,0 +1,382 @@
+<?php
+namespace App\Http\Controllers\Admin\Note;
+
+use App\Http\Controllers\Controller;
+use App\Models\Coupons;
+use App\Models\CouponsDetail;
+use App\Models\Member;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Validator;
+use Illuminate\Http\Request;
+
+/**
+ * 笔记
+ * Class MemberController
+ * @package App\Http\Controllers\Admin\Coupons
+ */
+class NoteController extends Controller
+{
+    /**
+     * 列表
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function lists(Request $request) {
+        return view('admin.note.lists');
+    }
+
+
+    /**
+     * 列表ajax数据
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function listsAjax(Request $request) {
+        $keyword = $request->input('keyword');
+        $limit = $request->input('limit', 10);
+
+        //搜索
+        $where = array();
+        if ($keyword) {
+            $where[] = array('name', 'like', '%' . $keyword . '%');
+        }
+        $result = Coupons::where($where)
+            ->orderBy('id', 'desc')
+            ->paginate($limit)->toArray();
+        if (!$result['data']) {
+            return res_error('数据为空');
+        }
+        return res_success($result['data'], $result['total']);
+    }
+
+    /**
+     * 添加编辑
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
+    public function edit(Request $request) {
+        if ($request->isMethod('post')) {
+            //验证规则
+            $validator = Validator::make($request->all(), [
+
+                'name' => 'required',
+                'type' => 'required|numeric',
+                'amount' => 'required',
+                'use_price' => 'required',
+                'goods_ids' => 'required',
+                'start_time' => 'required',
+                'end_time' => 'required|date|after:start_time'
+            ], [
+                'name.required' => '活动名称不能为空',
+                'type.required' => '类型不能为空',
+                'amount.required' => '金额不能为空',
+                'use_price.required' => '起用金额不能为空',
+                'goods_ids.required' => '允许使用的商品不能为空',
+                'start_time.required' => '开始时间不能为空',
+                'end_time.required' => '结束时间不能为空',
+                'end_time.after' => '结束时间必须大于开始时间'
+            ]);
+            $error = $validator->errors()->all();
+            if ($error) {
+                return res_error(current($error));
+            }
+
+            $save_data = array();
+            foreach ($request->only(['name', 'image','point', 'goods_ids','type','amount','use_price','start_time','end_time']) as $key => $value) {
+                if($key=='goods_ids'){
+                    $save_data[$key] = ($value || $value == 0) ? json_encode(explode(',', $value)) : null;
+                }else{
+                    $save_data[$key] = ($value || $value == 0) ? $value : null;
+                }
+
+            }
+
+            try {
+                $res = DB::transaction(function () use ($request, $save_data) {
+                    if ($request->id) {
+                        $res = Coupons::where('id', $request->id)->update($save_data);
+                    } else {
+                        $result = Coupons::create($save_data);
+                        $res = $result->id;
+                    }
+                    return $res;
+                });
+            } catch (\Exception $e) {
+                $res = false;
+            }
+
+            if ($res) {
+                return res_success();
+            } else {
+                return res_error('保存失败');
+            }
+        } else {
+            $item = array();
+            if ($request->id) {
+                $item = Coupons::find($request->id)->toArray();
+                if (!$item) {
+                    return res_error('数据错误');
+                }
+            }
+            $datas = array();
+            foreach ($item as $key=>$value){
+                if($key=='goods_ids'){
+                    $datas[$key] = ($value || $value == 0) ? json_decode($value,true) : null;
+                }else{
+                    $datas[$key] = ($value || $value == 0) ? $value : null;
+                }
+            }
+
+            return view('admin.coupons.edit', ['item' => $datas]);
+        }
+    }
+
+    /**
+     * 优惠券列表
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function generateLists(Request $request) {
+        $cou_id=$request->id;
+        return view('admin.coupons.generate',['cou_id'=>$cou_id]);
+    }
+
+
+    /**
+     * 查看优惠券数据
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function generateAjax(Request $request) {
+        $limit = $request->input('limit', 10);
+
+        //搜索
+        $where = array();
+        if ($request->cou_id) {
+            $where[] = array('cou_id', $request->cou_id);
+        }
+        $result = CouponsDetail::where($where)
+            ->orderBy('id', 'desc')
+            ->paginate($limit)->toArray();
+        if (!$result['data']) {
+            return res_error('数据为空');
+        }
+
+
+        $cou_ids = array();
+        foreach ($result['data'] as $value) {
+            $cou_ids[] = $value['cou_id'];
+        }
+
+        if ($cou_ids) {
+            $coupons_res = Coupons::whereIn('id', $cou_ids)
+                ->select('name','amount','id')->get()->toArray();
+            $coupons_res = array_column($coupons_res,null,'id');
+        }
+        $data_list = array();
+
+        foreach ($result['data'] as $key=>$value){
+            $_item = $value;
+            $_item['name'] = isset($coupons_res[$value['cou_id']]['name']) ? $coupons_res[$value['cou_id']]['name'] : '';
+            $_item['amount'] = isset($coupons_res[$value['cou_id']]['amount']) ? $coupons_res[$value['cou_id']]['amount'] : '';
+            $data_list[] = $_item;
+        }
+        return res_success($data_list, $result['total']);
+    }
+
+
+
+    /**
+     * 生成券
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
+    public function generate(Request $request) {
+        $id = $request->id;
+        if (empty($id)) return res_error('数据错误');
+        $generate_num = $request->generate_num;
+
+        if (empty($generate_num)) return res_error('生成数量必须大于0');
+
+        //dd($request->all());
+
+        $coupons_data = Coupons::find($request->id)->toArray();
+        if (!empty($coupons_data)) {
+            //开始生成
+            $generate_num = (int)$generate_num;
+            $res='';
+            if (!empty($coupons_data) && $generate_num > 0) {
+                //开始生成
+                for ($i = 1; $i <= $generate_num; $i++) {
+                    $password   = substr(md5(time() . $coupons_data['id'] . str_random(6)), 8, 16);
+                    $insert_arr = array();
+                    $insert_arr = array(
+                        'cou_id'   => $coupons_data['id'],
+                        'password' => strtoupper($password),
+                        'shop_id'  => $coupons_data['shop_id'],
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    );
+                    if (!empty($m_id)) {
+                        $insert_arr['m_id']    = $m_id;
+                        $insert_arr['is_send'] = 1;
+                    }
+                    $insert_data[] = $insert_arr;
+                }
+                //增加数据
+                $res=CouponsDetail::insert($insert_data);
+            }
+            if ($res) {
+                return res_success();
+            } else {
+                return res_error('保存失败');
+            }
+        } else {
+            return res_error('活动不存在');
+        }
+    }
+
+    /**
+     * 绑定用户
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
+    public function detail_set_user(Request $request) {
+        $id       = $request->id;
+        $username = $request->username;
+        if (empty($username))  return res_error('用户名不能为空');
+        $member_id = Member::where('username',$username)->value('id');
+
+        if (!empty($member_id)) {
+            $coupons_detail_data = CouponsDetail::find($id)->toArray();
+            if (!empty($coupons_detail_data) && $coupons_detail_data['m_id'] == 0) {
+                $save_data=array(
+                    'm_id'  => $member_id
+                );
+                $res = CouponsDetail::where('id', $id)->update($save_data);
+                if (!empty($res)) {
+                    return res_success();
+                } else {
+                    return res_error('绑定失败');
+                }
+            } else {
+                return res_error('优惠券不存在或者已经绑定用户');
+            }
+        } else {
+            return res_error('用户不存在');
+        }
+    }
+
+    /**
+     * 修改状态
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function status(Request $request) {
+        $id = $request->id;
+        if (is_array($request->id)) {
+            foreach ($id as $val) {
+                $ids[] = (int)$val;
+            }
+        } else {
+            $ids = array((int)$id);
+        }
+        $status = (int)$request->status;
+        if ($ids && isset($status)) {
+            $res = Coupons::whereIn('id', $ids)->update(['status' => $status]);
+            if ($res) {
+                return res_success();
+            } else {
+                return res_error('操作失败');
+            }
+        } else {
+            return res_error('参数错误');
+        }
+    }
+
+
+    /**
+     * 修改状态-coupons_detail
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function is_close(Request $request) {
+        $id = $request->id;
+        if (is_array($request->id)) {
+            foreach ($id as $val) {
+                $ids[] = (int)$val;
+            }
+        } else {
+            $ids = array((int)$id);
+        }
+        $status = (int)$request->status;
+        if ($ids && isset($status)) {
+            $res = CouponsDetail::whereIn('id', $ids)->update(['is_close' => $status]);
+            if ($res) {
+                return res_success();
+            } else {
+                return res_error('操作失败');
+            }
+        } else {
+            return res_error('参数错误');
+        }
+    }
+
+
+    /**
+     * 删除数据
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request) {
+        $id = $request->id;
+        if (is_array($request->id)) {
+            foreach ($id as $val) {
+                $ids[] = (int)$val;
+            }
+        } else {
+            $ids = array((int)$id);
+        }
+
+        if (!$ids) {
+            return res_error('参数错误');
+        }
+
+        $res = Coupons::whereIn('id', $ids)->delete();
+        if ($res) {
+            return res_success();
+        } else {
+            return res_error('删除失败');
+        }
+    }
+
+    /**
+     * 删除数据
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function coupons_detail_delete(Request $request) {
+        $id = $request->id;
+        if (is_array($request->id)) {
+            foreach ($id as $val) {
+                $ids[] = (int)$val;
+            }
+        } else {
+            $ids = array((int)$id);
+        }
+
+        if (!$ids) {
+            return res_error('参数错误');
+        }
+
+        $res = CouponsDetail::whereIn('id', $ids)->delete();
+        if ($res) {
+            return res_success();
+        } else {
+            return res_error('删除失败');
+        }
+    }
+
+}
