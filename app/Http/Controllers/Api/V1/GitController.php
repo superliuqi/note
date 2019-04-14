@@ -65,6 +65,6 @@ class GitController extends Controller
 
     public function test()
     {
-        echo 'already aaaa';
+        echo 'already yes ~!';
     }
 }
