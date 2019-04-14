@@ -10,4 +10,6 @@ class GitController extends Controller
     public function index() {
         file_put_contents('./git.txt', file_get_contents("php://input"));
     }
+
+    public function test(){}
 }
