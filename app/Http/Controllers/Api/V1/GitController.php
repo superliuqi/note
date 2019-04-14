@@ -24,7 +24,6 @@ class GitController extends Controller
                 $shellPath = "/home/www/T-Blog";
                 $cmd = "cd $shellPath && sudo git pull && sudo /bin/bash CI.sh";
                 $res = $this -> doShell($cmd);
-                $create = GitLog::create(['val'=>1]);
                 print_r($res); // 主要打印结果给github记录查看，自己测试时查看
 
             }
