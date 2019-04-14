@@ -8,4 +8,5 @@ class GitLog extends Model
 {
     protected $table = 'git_log';
     protected $guarded = ['id'];
+    public $timestamps = false;
 }
