@@ -11,5 +11,8 @@ class GitController extends Controller
         file_put_contents('./git.txt', file_get_contents("php://input"));
     }
 
-    public function test(){}
+    public function test()
+    {
+        echo 'yes';
+    }
 }
