@@ -21,7 +21,7 @@ class GitController extends Controller
                 // sign sucess
 
                 set_time_limit(3 * 60); //最大过期时间3分钟
-                $shellPath = "/home/www/T-Blog";
+                $shellPath = "/data/wwwroot/default/note";
                 $cmd = "cd $shellPath && sudo git pull && sudo /bin/bash CI.sh";
                 $res = $this -> doShell($cmd);
                 $create = GitLog::create(['val'=>1]);
