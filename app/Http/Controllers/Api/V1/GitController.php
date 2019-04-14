@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\GitLog;
 
 class GitController extends Controller
 {
 
     public function index() {
-        file_put_contents('./git.txt', file_get_contents("php://input"));
+        $data = file_get_contents("php://input");
+        $res = GitLog::create(['val'=>$data]);
     }
 
     public function test()
