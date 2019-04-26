@@ -16,8 +16,7 @@ class UsersController extends Controller
 
     public function users()
     {
-        $users = $this->wechat->user->list();
-        return $users;
+        dd($this->wechat);
     }
 
 }

@@ -23,7 +23,7 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
     Route::any('wechat','WechatController@serve');
 
     Route::get('users','UsersController@users');
-    
+
 
 });
 
