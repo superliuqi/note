@@ -16,7 +16,7 @@ class UsersController extends Controller
 
     public function users()
     {
-        dd($this->wechat->user->list());
+        dd($this->wechat->auto_reply->current());
     }
 
 }
