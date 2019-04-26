@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use EasyWeChat\BasicService\Application;
+use EasyWeChat\OfficialAccount\Application;
 
 class UsersController extends Controller
 {
@@ -16,7 +16,7 @@ class UsersController extends Controller
 
     public function users()
     {
-        dd($this->wechat->toArray());
+        dd($this->wechat);
     }
 
 }
