@@ -22,9 +22,9 @@ class WechatController extends Controller
 
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
-                case 'event':
-                    return '收到事件消息';
-                    break;
+//                case 'event':
+//                    return '收到事件消息';
+//                    break;
                 case 'subscribe':
                     return '欢迎关注我的订阅号';
                     break;
