@@ -20,6 +20,8 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
 
     Route::any('git','GitController@index');
 
+    Route::any('wechat','WechatController@serve');
+
 });
 
 
