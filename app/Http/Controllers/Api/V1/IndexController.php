@@ -8,6 +8,18 @@ class IndexController extends Controller
 {
 
     public function index() {
-        echo 'api_index';
+        $result = [
+            'code'=>0,
+            'data'=>[
+                'result'=>[
+                    'location'=>[
+                        'lng'=>'120',
+                        'lat'=>'30'
+                    ]
+                ]
+            ]
+        ];
+
+        echo json_encode($result);
     }
 }
