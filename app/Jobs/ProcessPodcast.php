@@ -21,7 +21,7 @@ class ProcessPodcast implements ShouldQueue
     public $time;
     public function __construct($time)
     {
-        $this->time = $this;
+        $this->time = $this->time;
     }
 
     /**
