@@ -21,7 +21,7 @@ class ProcessPodcast implements ShouldQueue
     public $time;
     public function __construct($time)
     {
-        $this->time = $this->time;
+        $this->time = $time;
     }
 
     /**
@@ -31,6 +31,6 @@ class ProcessPodcast implements ShouldQueue
      */
     public function handle()
     {
-        Test::create(['param'=>date('Y-m-d H:i:s',$this->time).' and '.date('Y-m-d H:i:s',time())]);
+        Test::create(['param'=>date('Y-m-d H:i:s',time()).' delay '.$this->time .' minutes']);
     }
 }
