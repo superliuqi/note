@@ -31,6 +31,6 @@ class ProcessPodcast implements ShouldQueue
      */
     public function handle()
     {
-        Test::create(['param'=>'start at:'.date('Y-m-d H:i:s',$this->time).' and work at:'.$this->time]);
+        Test::create(['param'=>'start at:'.date('Y-m-d H:i:s',$this->time).' and work at:'.date('Y-m-d H:i:s')]);
     }
 }
