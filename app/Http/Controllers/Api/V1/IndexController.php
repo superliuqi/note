@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\Order;
 use App\Jobs\ProcessPodcast;
 use Illuminate\Http\Request;
 
@@ -25,8 +26,8 @@ class IndexController extends Controller
 
     public function sub()
     {
-        ProcessPodcast::dispatch(time())->onQueue('order')->delay(now()->addMinutes(3));
-        echo time();
-
+        $id = mt_rand(1,100);
+        Order::dispatch(['start_at'=>time(),'id'=>$id])->onQueue('order')->delay(now()->addMinutes(3));
+        echo $id;
     }
 }
