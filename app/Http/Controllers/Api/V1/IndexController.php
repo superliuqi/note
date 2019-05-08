@@ -25,7 +25,7 @@ class IndexController extends Controller
 
     public function sub()
     {
-        ProcessPodcast::dispatch(time())->onQueue('order')->delay(now()->addMinutes(2));
+        ProcessPodcast::dispatch(time())->onQueue('order')->delay(now()->addMinutes(3));
         echo time();
 
     }
