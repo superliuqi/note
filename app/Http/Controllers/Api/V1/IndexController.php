@@ -19,7 +19,7 @@ class IndexController extends Controller
 
     public function delay()
     {
-        ProcessPodcast::dispatch(time())->delay(now()->addMinutes(2));
-        echo 'y';
+        ProcessPodcast::dispatch(time())->delay(now()->addMinutes(3));
+        echo time();
     }
 }
