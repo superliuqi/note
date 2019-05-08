@@ -18,10 +18,10 @@ class Order implements ShouldQueue
      *
      * @return void
      */
-    public $arr;
+    public $arr = [];
     public function __construct($arr)
     {
-        $this->$arr = $arr;
+        $this->arr = $arr;
     }
 
     /**
