@@ -25,7 +25,6 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
     Route::get('users','UsersController@users');
 
     Route::get('delay','IndexController@delay');
-    Route::get('sub','IndexController@sub');
 
 
 });
