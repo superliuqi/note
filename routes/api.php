@@ -26,8 +26,8 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
 
     Route::get('delay','IndexController@delay');
 
-    Route::get('login/github', 'GithubController@redirectToProvider');
-    Route::get('login/github/callback', 'GithubController@handleProviderCallback');
+    Route::get('github', 'GithubController@redirectToProvider');
+    Route::get('github/callback', 'GithubController@handleProviderCallback');
 
 
 
