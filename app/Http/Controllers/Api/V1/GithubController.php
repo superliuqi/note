@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Test;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
@@ -26,7 +27,8 @@ class GithubController extends Controller
     public function handleProviderCallback()
     {
         $user = Socialite::driver('github')->user();
-
-        dd($user);
+        $data = $user->user;
+        Test::create(['param'=>json_encode($data)]);
+        echo 'ok';
     }
 }
