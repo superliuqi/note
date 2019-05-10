@@ -29,6 +29,8 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
     Route::get('login/github', 'GithubController@redirectToProvider');
     Route::get('login/github/callback', 'GithubController@handleProviderCallback');
 
+    
+
 });
 
 
