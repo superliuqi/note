@@ -25,7 +25,6 @@ class UsersController extends Controller
         $config = config('wechat.official_account.default');
 //        unset($config['aes_key']);
         $app = Factory::officialAccount($config);
-        dd($app->base->getValidIps());
 //        dd($app);
         $users = $app->user->lists();
         dd($users);
