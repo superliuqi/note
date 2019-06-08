@@ -12,9 +12,10 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::prefix('v1')->namespace('Api\V1')->group(function () {
     //首页
-    Route::prefix('index')->group(function () {
+    Route::group(['prefix'=>'index','middleware'=>'throttle:100,1'],function () {
         Route::get('/', 'IndexController@index'); //首页
     });
 
@@ -25,6 +26,7 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
     Route::get('users','UsersController@users');
 
     Route::get('delay','IndexController@delay');
+    Route::get('tt','IndexController@tt');
 
     Route::get('github', 'GithubController@redirectToProvider');
     Route::get('github/callback', 'GithubController@handleProviderCallback');
