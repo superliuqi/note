@@ -26,7 +26,7 @@ class UsersController extends Controller
 //        unset($config['aes_key']);
         $app = Factory::officialAccount($config);
 //        dd($app);
-        $users = $app->user->lists();
+        $users = $app->user->list();
         dd($users);
     }
 
