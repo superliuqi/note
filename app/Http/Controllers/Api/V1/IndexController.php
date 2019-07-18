@@ -23,7 +23,7 @@ class IndexController extends Controller
 
     public function delay()
     {
-    	
+
         $id = mt_rand(1, 100);
 //        ProcessPodcast::dispatch(time())->delay(now()->addMinutes(mt_rand(1,3)));
 //        Order::dispatch(['start_at'=>time(),'id'=>$id])->onQueue('order')->delay(now()->addMinutes(mt_rand(1,3)));

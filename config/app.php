@@ -175,7 +175,7 @@
             App\Providers\RouteServiceProvider::class,
 
             Overtrue\LaravelWeChat\ServiceProvider::class,
-			VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class,
+//			VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class,
         ],
 
         /*
