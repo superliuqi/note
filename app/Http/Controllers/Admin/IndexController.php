@@ -11,8 +11,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AdminRole;
 use App\Models\Menu;
-use function Couchbase\defaultDecoder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redis;
 
 class IndexController extends Controller
 {

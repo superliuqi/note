@@ -7,6 +7,7 @@ use App\Jobs\Order;
 use App\Jobs\ProcessPodcast;
 use App\Models\Test;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
@@ -22,11 +23,38 @@ class IndexController extends Controller
 
     public function delay()
     {
-        $id = mt_rand(1,100);
-        ProcessPodcast::dispatch(time())->delay(now()->addMinutes(mt_rand(1,3)));
-        Order::dispatch(['start_at'=>time(),'id'=>$id])->onQueue('order')->delay(now()->addMinutes(mt_rand(1,3)));
-        echo $id.'<br/>';
-        echo time();
+        $id = mt_rand(1, 100);
+//        ProcessPodcast::dispatch(time())->delay(now()->addMinutes(mt_rand(1,3)));
+//        Order::dispatch(['start_at'=>time(),'id'=>$id])->onQueue('order')->delay(now()->addMinutes(mt_rand(1,3)));
+//        echo $id.'<br/>';
+//        echo time();
+
+        for ($i = 0; $i < 10; $i++) {
+            Order::dispatch(['start_at' => time(), 'id' => $i])->onQueue('order')->delay(now()->addMinutes(1));
+            sleep(1);
+        }
+    }
+
+
+    public function tt()
+    {
+        echo today();
+    }
+
+    public function t1(Request $request)
+    {
+        DB::beginTransaction();
+        $res = Test::where('id',121)->first();
+        $update = Test::where(['id'=>121,'version'=>$res->version])->update(['kc'=>$res->kc - 1,'version'=>$res->version + 1,'param'=>$res->param .$request->url()]);
+        DB::commit();
+    }
+
+    public function t2(Request $request)
+    {
+        DB::beginTransaction();
+        $res = Test::where('id',121)->first();
+        $update = Test::where(['id'=>121,'version'=>$res->version])->update(['kc'=>$res->kc - 1,'version'=>$res->version + 1,'param'=>$res->param .$request->url()]);
+        DB::commit();
     }
 
 }

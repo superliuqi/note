@@ -9,19 +9,6 @@
                     <input type="text" name="title" lay-verify="required" lay-errormsg="标题不能为空" autocomplete="off" class="layui-input">
                 </div>
             </div>
-            {{--<div class="layui-form-item">--}}
-                {{--<label class="layui-form-label">缩略图</label>--}}
-                {{--<button type="button" class="layui-btn layui-btn-sm plupload_btn" id="up_image">选择图片</button>--}}
-                {{--<a href="{{ isset($item['image']) ? $item['image'] : '' }}" target="_blank"><img src="{{ isset($item['image']) ? $item['image'] : '' }}" width="50" style="display: {{ isset($item['image']) ? : 'none' }};"></a>--}}
-                {{--<input type="hidden" value="" name="image">--}}
-            {{--</div>--}}
-            {{--<div class="layui-form-item">--}}
-                {{--<label class="layui-form-label">H5地址</label>--}}
-                {{--<div class="layui-input-block">--}}
-                    {{--<input type="text" name="url"  autocomplete="off" class="layui-input">--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
             <div class="layui-form-item">
                 <label class="layui-form-label">详情</label>
                 <div class="layui-input-block">
