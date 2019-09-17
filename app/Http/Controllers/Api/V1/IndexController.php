@@ -8,6 +8,7 @@ use App\Jobs\ProcessPodcast;
 use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class IndexController extends Controller
 {
@@ -17,7 +18,7 @@ class IndexController extends Controller
 //        $cityName = $request->cityName;
 //        $result = file_get_contents('http://api.map.baidu.com/geocoder?address=' . $cityName . '&output=json&key=37492c0ee6f924cb5e934fa08c6b1676&city=%E5%8C%97%E4%BA%AC%E5%B8%82');
 //        return $result;
-		dd('success1');
+		Redis::set('lq:name','liuqi',60);
     }
 
 
