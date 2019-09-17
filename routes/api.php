@@ -19,6 +19,10 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
         Route::get('/', 'IndexController@index'); //首页
     });
 
+	Route::group(['prefix'=>'order','middleware'=>'throttle:100,1'],function () {
+		Route::get('/', 'OrderController@index'); //首页
+	});
+
     Route::any('git','GitController@index');
 
     Route::any('wechat','WechatController@serve');
