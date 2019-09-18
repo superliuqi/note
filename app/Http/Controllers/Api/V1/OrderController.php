@@ -61,7 +61,12 @@ class OrderController extends Controller
 		if (!$ex) {
 			exit('fail_2');
 		}
-		TestOrder::where('order_id', $order_id)->update(['status' => 1]);
-		echo 'success';
+		$sucess = TestOrder::where('order_id', $order_id)->update(['status' => 1]);
+		if ($sucess) {
+			Redis::del($redis_key . ':' . $order_id);
+			echo 'success';
+		}else{
+			exit('fail_3');
+		}
 	}
 }
