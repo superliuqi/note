@@ -21,7 +21,8 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
 
 	Route::group(['prefix'=>'order','middleware'=>'throttle:100,1'],function () {
 		Route::get('/', 'OrderController@index'); //首页
-		Route::get('add', 'OrderController@addOrder'); //首页
+		Route::get('add', 'OrderController@addOrder');
+		Route::get('pay', 'OrderController@pay');
 	});
 
     Route::any('git','GitController@index');
