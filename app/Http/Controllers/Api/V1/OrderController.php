@@ -25,15 +25,18 @@ class OrderController extends Controller
 			'updated_at' => date('Y-m-d H:i:s')
 		];
 
-		try{
-			$orderList = 'order:temp:list';
-			$result = Redis::lpush($orderList,json_encode($order));
-			if($result){
-				echo '下单成功';exit;
-			}else{
-				echo '下单是吧';exit;
+		try {
+//			$orderList = 'order:temp:list';
+//			$result = Redis::lpush($orderList,json_encode($order));
+			$result = Order::dispatch($order)->onQueue('order')->delay(now()->addMinutes(mt_rand(1, 3)));
+			if ($result) {
+				echo '下单成功';
+				exit;
+			} else {
+				echo '下单是吧';
+				exit;
 			}
-		}catch (\Exception $e){
+		} catch (\Exception $e) {
 
 		}
 	}
