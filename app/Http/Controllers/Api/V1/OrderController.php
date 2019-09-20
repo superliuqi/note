@@ -47,7 +47,7 @@ class OrderController extends Controller
 
 	public function pay(Request $request)
 	{
-		Redis::set('name','lq');exit;
+		Redis::set('name','hhw');exit;
 		$order_id = $request->order_id;
 		if (!$order_id) {
 			exit('fail');
