@@ -181,7 +181,7 @@ return [
 //			VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class,
 
 			Laravel\Scout\ScoutServiceProvider::class,
-			ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
+//			ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
 
 		],
 
