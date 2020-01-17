@@ -15,6 +15,5 @@
 @yield('content')
 <script src="{{ URL::asset('admin/js/layui/layui.js') }}" charset="utf-8"></script>
 @yield('footer')
-<span style="text-align: center;margin-left: 550px">Copyright © 2011-2020  <a href="">浙ICP备19013803号-1</a></span>
 </body>
 </html>
