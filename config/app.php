@@ -180,9 +180,8 @@ return [
             Overtrue\LaravelWeChat\ServiceProvider::class,
 //			VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class,
 
-			Laravel\Scout\ScoutServiceProvider::class,
+//			Laravel\Scout\ScoutServiceProvider::class,
 //			ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
-
 		],
 
         /*
