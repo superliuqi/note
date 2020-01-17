@@ -1,6 +1,9 @@
 <?php
 
-    return [
+use Laravel\Scout\ScoutServiceProvider;
+use ScoutEngines\Elasticsearch\ElasticsearchProvider;
+
+return [
 
         /*
         |--------------------------------------------------------------------------
@@ -176,7 +179,11 @@
 
             Overtrue\LaravelWeChat\ServiceProvider::class,
 //			VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class,
-        ],
+
+			Laravel\Scout\ScoutServiceProvider::class,
+			ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
+
+		],
 
         /*
         |--------------------------------------------------------------------------

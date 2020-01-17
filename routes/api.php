@@ -35,6 +35,7 @@ Route::prefix('v1')->namespace('Api\V1')->group(function () {
     Route::get('tt','IndexController@tt');
     Route::get('t1','IndexController@t1');
     Route::get('t2','IndexController@t2');
+    Route::get('search','IndexController@search');
 
     Route::get('github', 'GithubController@redirectToProvider');
     Route::get('github/callback', 'GithubController@handleProviderCallback');
